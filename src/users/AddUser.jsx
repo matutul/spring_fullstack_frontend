@@ -15,7 +15,7 @@ const AddUser = ({ isShow, setShow }) => {
   const onSubmit = async (data) => {
     await axios.post("http://localhost:8080/user", data);
     handleClose();
-    data.preventDefault();
+    // data.preventDefault();
   };
 
   return (

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import AddUser from "../users/AddUser";
 import ViewUser from "../users/ViewUser";
+import EditUser from "../users/EditUser";
 
 const Home = () => {
   const [users, setUsers] = useState([]);
@@ -13,16 +14,23 @@ const Home = () => {
 
   const handleShow = (e) => {
     e.preventDefault();
-    if (e.target.name == "addNew") {
-      setModalEvent("addNew");
+    // if (e.target.name == "addNew") {
+    //   setModalEvent("addNew");
+    //   setUserId(e.target.value);
+    //   setShow(true);
+    // }
+    // if (e.target.name == "view") {
+    //   setModalEvent("view");
+    //   setUserId(e.target.value);
+    //   setShow(true);
+    // }
+    if (e.target.name) {
+      setModalEvent(e.target.name);
+      // setModalEvent("view");
       setUserId(e.target.value);
       setShow(true);
     }
-    if (e.target.name == "view") {
-      setModalEvent("view");
-      setUserId(e.target.value);
-      setShow(true);
-    }
+    console.log(modalEvent, userId)
   };
 
   useEffect(() => {
@@ -45,7 +53,12 @@ const Home = () => {
       </Button>
 
       {modalEvent == "addNew" && <AddUser isShow={show} setShow={setShow} />}
-      {modalEvent == "view" && <ViewUser isShow={show} setShow={setShow} userId={userId}/>}
+      {modalEvent == "view" && (
+        <ViewUser isShow={show} setShow={setShow} userId={userId} />
+      )}
+      {modalEvent == "edit" && (
+        <EditUser isShow={show} setShow={setShow} userId={userId} />
+      )}
 
       {users.length ? (
         <table className="table table-responsive caption-top p-0 bg-white rounded-4 shadow overflow-hidden">
