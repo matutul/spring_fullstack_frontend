@@ -14,32 +14,32 @@ const Home = () => {
 
   const handleShow = (e) => {
     e.preventDefault();
-    // if (e.target.name == "addNew") {
-    //   setModalEvent("addNew");
-    //   setUserId(e.target.value);
-    //   setShow(true);
-    // }
-    // if (e.target.name == "view") {
-    //   setModalEvent("view");
-    //   setUserId(e.target.value);
-    //   setShow(true);
-    // }
     if (e.target.name) {
       setModalEvent(e.target.name);
       // setModalEvent("view");
       setUserId(e.target.value);
       setShow(true);
     }
-    console.log(modalEvent, userId)
+    console.log(modalEvent, userId);
   };
 
   useEffect(() => {
     loadUsers();
-  }, [show]);
+  }, [show, users]);
 
   const loadUsers = async () => {
     const loadedUsers = await axios.get("http://localhost:8080/users");
     setUsers(loadedUsers.data);
+  };
+
+  const handleDeleteUserBtn = async (e) => {
+    e.preventDefault();
+    const url = `http://localhost:8080/user/${e.target.value}`;
+    const deleteUserResponse = await axios.delete(url);
+    if (deleteUserResponse.status == 200) {
+      const updatedUser = users.filter((user) => user.id !== e.target.value);
+      setUsers(updatedUser);
+    }
   };
   return (
     <div className="container min-vh-100 py-5">
@@ -108,7 +108,15 @@ const Home = () => {
                   >
                     Edit
                   </button>
-                  <button className="btn btn-danger py-0 mx-1">Delete</button>
+                  <button
+                    className="btn btn-danger py-0 mx-1"
+                    value={user.id}
+                    onClick={(e) => {
+                      handleDeleteUserBtn(e);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
